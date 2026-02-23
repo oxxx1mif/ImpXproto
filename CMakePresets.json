@@ -1,5 +1,10 @@
 ﻿{
     "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
     "configurePresets": [
         {
             "name": "windows-base",
@@ -19,7 +24,7 @@
         },
         {
             "name": "x64-debug",
-            "displayName": "x64 Debug",
+            "displayName": "x64 Debug (MSVC)",
             "inherits": "windows-base",
             "architecture": {
                 "value": "x64",
@@ -31,18 +36,33 @@
         },
         {
             "name": "x64-release",
-            "displayName": "x64 Release",
+            "displayName": "x64 Release (MSVC)",
             "inherits": "x64-debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
-            "name": "x86-debug",
-            "displayName": "x86 Debug",
-            "inherits": "windows-base",
+            "name": "mingw-base",
+            "hidden": true,
+            "generator": "Ninja",
+            "binaryDir": "${sourceDir}/out/build/${presetName}",
+            "installDir": "${sourceDir}/out/install/${presetName}",
+            "environment": {
+                "PATH": "C:/msys64/ucrt64/bin;$penv{PATH}"
+            },
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "C:/msys64/ucrt64/bin/gcc.exe",
+                "CMAKE_CXX_COMPILER": "C:/msys64/ucrt64/bin/g++.exe",
+                "CMAKE_RC_COMPILER": "C:/msys64/ucrt64/bin/windres.exe"
+            }
+        },
+        {
+            "name": "mingw-x64-debug",
+            "displayName": "MinGW x64 Debug (GCC)",
+            "inherits": "mingw-base",
             "architecture": {
-                "value": "x86",
+                "value": "x64",
                 "strategy": "external"
             },
             "cacheVariables": {
@@ -50,51 +70,60 @@
             }
         },
         {
-            "name": "x86-release",
-            "displayName": "x86 Release",
-            "inherits": "x86-debug",
+            "name": "mingw-x64-release",
+            "displayName": "MinGW x64 Release (GCC)",
+            "inherits": "mingw-x64-debug",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release"
             }
         },
         {
-            "name": "linux-debug",
-            "displayName": "Linux Debug",
+            "name": "android-base",
+            "hidden": true,
             "generator": "Ninja",
             "binaryDir": "${sourceDir}/out/build/${presetName}",
             "installDir": "${sourceDir}/out/install/${presetName}",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Linux"
-            },
-            "vendor": {
-                "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-                    "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
-                }
+                "CMAKE_SYSTEM_NAME": "Android",
+                "CMAKE_ANDROID_NDK": "$env{USERPROFILE}/AppData/Local/Android/Sdk/ndk/28.2.13676358",
+                "CMAKE_TOOLCHAIN_FILE": "$env{USERPROFILE}/AppData/Local/Android/Sdk/ndk/28.2.13676358/build/cmake/android.toolchain.cmake",
+                "CMAKE_ANDROID_STL_TYPE": "c++_shared"
             }
         },
         {
-            "name": "macos-debug",
-            "displayName": "macOS Debug",
-            "generator": "Ninja",
-            "binaryDir": "${sourceDir}/out/build/${presetName}",
-            "installDir": "${sourceDir}/out/install/${presetName}",
+            "name": "android-arm64-debug",
+            "displayName": "Android arm64-v8a Debug",
+            "inherits": "android-base",
             "cacheVariables": {
-                "CMAKE_BUILD_TYPE": "Debug"
-            },
-            "condition": {
-                "type": "equals",
-                "lhs": "${hostSystemName}",
-                "rhs": "Darwin"
-            },
-            "vendor": {
-                "microsoft.com/VisualStudioRemoteSettings/CMake/1.0": {
-                    "sourceDir": "$env{HOME}/.vs/$ms{projectDirName}"
-                }
+                "CMAKE_BUILD_TYPE": "Debug",
+                "ANDROID_ABI": "arm64-v8a",
+                "ANDROID_PLATFORM": "android-24"
+            }
+        },
+        {
+            "name": "android-arm64-release",
+            "displayName": "Android arm64-v8a Release",
+            "inherits": "android-arm64-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        },
+        {
+            "name": "android-x86_64-debug",
+            "displayName": "Android x86_64 Debug",
+            "inherits": "android-base",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug",
+                "ANDROID_ABI": "x86_64",
+                "ANDROID_PLATFORM": "android-24"
+            }
+        },
+        {
+            "name": "android-x86_64-release",
+            "displayName": "Android x86_64 Release",
+            "inherits": "android-x86_64-debug",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release"
             }
         }
     ]
