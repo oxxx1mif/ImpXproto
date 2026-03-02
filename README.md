@@ -1,6 +1,6 @@
 ## ImpXproto
 
-<img src="https://github.com/imperial-gua/GuA-Cheat/blob/master/ab6f339ce4c9088743b8dea252d5b6d7.jpg"alt="Banner" width="600">
+![Banner](https://github.com/imperial-gua/GuA-Cheat/blob/master/ab6f339ce4c9088743b8dea252d5b6d7.jpg)
 
 ### Protocol structure:
 
